@@ -11,12 +11,14 @@ import Alamofire
 import OAuthSwift
 import OAuthSwiftAlamofire
 import KeychainAccess
+import AlamofireImage
 
 class TimelineViewController: UIViewController, UITabBarDelegate, UITableViewDataSource {
     
     @IBOutlet weak var tableView: UITableView!
     var tweets: [Tweet] = []
-    
+    var users: [User] = []
+    var user: User?
     var refreshControl: UIRefreshControl!
     
 
@@ -30,6 +32,7 @@ class TimelineViewController: UIViewController, UITabBarDelegate, UITableViewDat
         tableView.rowHeight = 160
         tableView.estimatedRowHeight = 200
         fetchTweets()
+        fetchUser()
         // Do any additional setup after loading the view.
     }
     @objc func didPullTorefresh (_ refreshControl: UIRefreshControl) {
@@ -47,6 +50,7 @@ class TimelineViewController: UIViewController, UITabBarDelegate, UITableViewDat
             }
         }
     }
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return tweets.count
     }
@@ -71,14 +75,48 @@ class TimelineViewController: UIViewController, UITabBarDelegate, UITableViewDat
                 print("Successfully favorited the following Tweet: \n\(tweet.text)")
             }
         }
+      
+        }
+    func fetchUser() {
+        APIManager.shared.getCurrentAccount{ (user: User?, error: Error?) in
+            if let user = user {
+                self.user = user
+                
+            }
+        }
     }
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "detailSegue" {
+            let detailsController = segue.destination as! DetailsViewController
+            let cell = sender as! TweetCell?
+            let indexPath = tableView.indexPath(for: cell!)
+            detailsController.tweet = tweets[(indexPath?.row)!]
+        }
+        else {
+            if segue.identifier == "composeSegue" {
+                let composeController = segue.destination as! ComposeViewController
+                //composeController.image = (user?.profileUrl) as! String
+                composeController.name = (user?.name)!
+                composeController.userName = (user?.screenName)!
+            }
+        }
+    }
+    @IBAction func newButton(_ sender: Any) {
+        performSegue(withIdentifier: "composeSegue", sender: nil)
+    }
+
+//    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+//        let cell = sender as! UITableViewCell
+//        if let indexPath = tableView.indexPath(for: cell){
+//            let tweet  = tweets[indexPath.row]
+//            let detailsViewController = segue.destination as! DetailsViewController
+//            detailsViewController.tweet = tweet
+//        }
+//    }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-    
-
-    
-
 }
+

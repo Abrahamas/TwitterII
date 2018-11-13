@@ -30,13 +30,12 @@ class TweetCell: UITableViewCell {
     
     @IBOutlet weak var favoritedLabel: UIButton!
    
-    var profileUrl: NSURL?
+    var profileUrl: URL?
 //      static var current: User?
     private var TimelineViewController: UIViewController!
+     var loadingView : TimelineViewController?
     var tweet: Tweet! {
         didSet{
-             //selectedLabel.setTitle(String(describing: tweet.checked), for: UIControlState.normal)
-            //selectedLabel!.tex = tweet.cheked
             userLabel.text = tweet.user?.name
             overviewLabel.text = tweet.text
             userNameLabel.text = tweet.user?.screenName
@@ -44,9 +43,10 @@ class TweetCell: UITableViewCell {
             //countLabel.text = String(describing: tweet.id!)
             recountLabel.text = String(describing: tweet.retweetCount!)
             favoriteLabel.text = String(describing: tweet.favoriteCount!)
-            posterImageView.af_setImage(withURL: tweet.user?.profileUrl as! URL)
+            posterImageView.af_setImage(withURL: tweet.user!.profileUrl as! URL)
             self.posterImageView.layer.cornerRadius = self.posterImageView.frame.size.width / 2;
             self.posterImageView.clipsToBounds = true
+             self.posterImageView.layer.masksToBounds = true
             retweetLabel.setTitle(String(describing: tweet.retweetCount), for: UIControlState.normal)
             favoritedLabel.setTitle(String(describing: tweet.favoriteCount), for: UIControlState.normal)
             funcChangeColor(tweet)
@@ -77,13 +77,13 @@ class TweetCell: UITableViewCell {
                     print("Successfully unretweeted the following Tweet: \n\(tweet.text)")
                     let whiteTapImage = UIImage(named: "retweet-icon")
                     self.retweetLabel.setImage(whiteTapImage, for: UIControlState.normal)
-                    //self.TimelineViewController.fetchTweets()
+                    self.loadingView?.fetchTweets()
                 }
             }
         }
         else {
             tweet.retweeted = true
-            tweet.retweetCount! += tweet.retweetCount! + 1
+            tweet.retweetCount! += 1
             APIManager.shared.retweet(tweet) { (tweet: Tweet?, error: Error?) in
                 if let error = error {
                     print("Error retweeted: \(error.localizedDescription)")
@@ -91,7 +91,7 @@ class TweetCell: UITableViewCell {
                     print("Successfully retweeted the following Tweet: \n\(tweet.text)")
                     let greenTapImage = UIImage(named: "retweet-icon-green")
                     self.retweetLabel.setImage(greenTapImage, for: UIControlState.normal)
-                    //self.TimelineViewController?.fetchTweets()
+                    self.loadingView?.fetchTweets()
                 }
             }
         }
@@ -102,7 +102,7 @@ class TweetCell: UITableViewCell {
         sender: Any) {
         if tweet.favorited! {
             tweet.favorited = false
-            tweet.favoriteCount! -= tweet.favoriteCount! - 1
+            tweet.favoriteCount! -= 1
             APIManager.shared.unfavorite(tweet) { (tweet: Tweet?, error: Error?) in
                 if let error = error {
                     print("Error favoriting tweet: \(error.localizedDescription)")
@@ -110,13 +110,13 @@ class TweetCell: UITableViewCell {
                     print("Successfully unfavorited the following Tweet: \n\(tweet.text)")
                     let whiteTapImage = UIImage(named: "favor-icon")
                     self.favoritedLabel.setImage(whiteTapImage, for: UIControlState.normal)
-                   // self.parentView?.fetchTweets()
+                    self.loadingView?.fetchTweets()
                 }
             }
         }
         else {
             tweet.favorited = true
-            tweet.favoriteCount! += tweet.favoriteCount! + 1
+            tweet.favoriteCount! += 1
             APIManager.shared.favorite(tweet) { (tweet: Tweet?, error: Error?) in
                 if let error = error {
                     print("Error favoriting tweet: \(error.localizedDescription)")
@@ -124,32 +124,19 @@ class TweetCell: UITableViewCell {
                     print("Successfully favorited the following Tweet: \n\(tweet.text)")
                     let redTapImage = UIImage(named: "favor-icon-red")
                     self.favoritedLabel.setImage(redTapImage, for: UIControlState.normal)
-                    //self.parentView?.fetchTweets()
+                    self.loadingView?.fetchTweets()
                 }
             }
         }
         favoritedLabel.setTitle(String(describing: tweet.favoriteCount), for: UIControlState.normal)
     }
-//        // TODO: Update the local tweet model
-//        tweet.favorited = true
-//        tweet.favoriteCount! += tweet.favoriteCount! + 1
-//        // TODO: Update cell UI
-//
-//        // TODO: Send a POST request to the POST favorites/create endpoint
-//        APIManager.shared.favorite(tweet) { (tweet: Tweet?, error: Error?) in
-//            if let  error = error {
-//                print("Error favoriting tweet: \(error.localizedDescription)")
-//            } else if let tweet = tweet {
-//                print("Successfully favorited the following Tweet: \n\(tweet.text)")
-//
-//            }
-//        }
-//    }
+
     
     
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
+        
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {
