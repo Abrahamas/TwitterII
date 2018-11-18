@@ -35,7 +35,6 @@ class ReplyViewController: UIViewController, UITextViewDelegate {
         // TODO: Update Character Count Label
         let charCount = textView.text.count + 1
         let charLeft = characterLimit - charCount
-        //countLabel.text = String(describing: charLeft)
         setReplyButton()
         //Access the editind of the text
         return newText.characters.count < characterLimit
