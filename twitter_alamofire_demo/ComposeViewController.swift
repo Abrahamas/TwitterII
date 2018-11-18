@@ -8,12 +8,6 @@
 
 import UIKit
 import AlamofireImage
-//@objc protocol ComposeViewControllerDelegate {
-//    @objc optional func composeViewController(composeViewController: ComposeViewController, didSendUpdate tweet: Tweet)
-//protocol ComposeViewControllerDelegate {
-//    //func did(post: Tweet)
-//    optional func composeViewController(composeViewController: ComposeViewController, didSendUpdate tweet: Tweet)
-//}
 
 
 class ComposeViewController: UIViewController, UITextViewDelegate {
@@ -27,7 +21,6 @@ class ComposeViewController: UIViewController, UITextViewDelegate {
     
     @IBOutlet weak var tweetButton: UIBarButtonItem!
     
-    //weak var delegate: ComposeViewControllerDelegate?
     var image: String = ""
     var name: String = ""
     var userName: String = ""
@@ -35,12 +28,8 @@ class ComposeViewController: UIViewController, UITextViewDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        fetchUser()
         // Do any additional setup after loading the view.
-        
-        //profileImage.af_setImage(withURL: URL(string: image)!)
-        userLabel.text = name
-        userNameLabel.text = userName
         textView.delegate = self
 
     }
@@ -78,13 +67,21 @@ class ComposeViewController: UIViewController, UITextViewDelegate {
                 print("Error\(error.localizedDescription)")
             }
             else{
-               // print("Excellent, you do it")
                 self.performSegue(withIdentifier: "backSegue", sender: nil)
             }
         }
         
    }
     
+    func fetchUser() {
+        APIManager.shared.getCurrentAccount{ (user: User?, error: Error?) in
+            if let user = user {
+                self.profileImage.af_setImage(withURL: user.profileUrl!)
+                self.userLabel.text = user.name
+                self.userNameLabel.text = user.screenName
+            }
+        }
+    }
 
     @IBAction func backButton(_ sender: Any) {
         performSegue(withIdentifier: "backSegue", sender: nil)

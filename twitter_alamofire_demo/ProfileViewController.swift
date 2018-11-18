@@ -34,8 +34,7 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
         tableView.dataSource = self
         tableView.rowHeight = 160
         tableView.estimatedRowHeight = 200
-        
-       // fetchTweets()
+        fetchTweets()
         fetchUser()
         refreshControl = UIRefreshControl()
         refreshControl.addTarget(self, action: #selector(self.didPullToRefresh(_:)), for: .valueChanged)
@@ -47,21 +46,33 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
         // Dispose of any resources that can be recreated.
     }
     @objc func didPullToRefresh(_ refreshControl: UIRefreshControl) {
-        //fetchTweets()
+        fetchTweets()
     }
-//    func fetchTweets() {
-//        APIManager.shared.getHomeTimeLine { (tweets: [Tweet]?, error: Error?) in
-//
-//            // self.acIndicator.startAnimating()
-//            if let tweets = tweets {
-//                self.tweets = tweets
-//                // self.acIndicator.stopAnimating()
-//                self.tableView.reloadData()
-//                self.refreshControl.endRefreshing()
-//            }
-//        }
-//    }
-    
+    func fetchTweets() {
+        APIManager.shared.getHomeTimeLine { (tweets: [Tweet]?, error: Error?) in
+            if let tweets = tweets {
+                self.tweets = tweets
+        self.tableView.reloadData()
+       // self.refreshControl.endRefreshing()
+            }
+        }
+    }
+    func fetchUser() {
+        APIManager.shared.getCurrentAccount{ (user: User?, error: Error?) in
+            if let user = user {
+                self.user = user
+                self.userLabel.text = user.name
+                self.profileImage.af_setImage(withURL: user.profileUrl!)
+                self.backImage.af_setImage(withURL: URL(string: user.banerImage!)!)
+                self.userNameLabel.text = user.screenName
+                self.overviewLabel.text = user.tagline
+                self.follwing.text = String(describing: user.fallowingCount!) + " Following"
+                self.followers.text = String(describing: user.fallowersCount!) + " Followers"
+                self.tweet.text = String(describing: user.tweetsCount!) + " Tweets"
+            }
+        }
+    }
+
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return tweets.count
     }
@@ -88,21 +99,7 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
         }
         
     }
-    func fetchUser() {
-        APIManager.shared.getCurrentAccount{ (user: User?, error: Error?) in
-            if let user = user {
-                self.user = user
-                self.userLabel.text = user.name
-                //self.profileImage.af_setImage(withURL: URL(string: user.profileUrl)!)
-                self.backImage.af_setImage(withURL: URL(string: user.banerImage!)!)
-                self.userNameLabel.text = user.screenName
-                self.overviewLabel.text = user.tagline
-                self.follwing.text = String(describing: user.fallowingCount!) + " Following"
-                self.followers.text = String(describing: user.fallowersCount!) + " Followers"
-                self.tweet.text = String(describing: user.tweetsCount!) + " Tweets"
-            }
-        }
-            }
+   
     
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {

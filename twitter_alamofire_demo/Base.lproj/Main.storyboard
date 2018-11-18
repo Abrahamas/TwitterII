@@ -62,7 +62,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="134" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="Ctl-bI-Eag">
-                                <rect key="frame" x="0.0" y="0.0" width="375" height="623"/>
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="TweetCell" rowHeight="134" id="U1g-kw-izy" customClass="TweetCell" customModule="twitter_alamofire_demo" customModuleProvider="target">
@@ -160,6 +160,9 @@
                                                         <constraint firstAttribute="height" constant="30" id="cCZ-XS-eQQ"/>
                                                     </constraints>
                                                     <state key="normal" title="Button" image="reply-icon"/>
+                                                    <connections>
+                                                        <segue destination="RSZ-zf-mYA" kind="show" id="8Cy-i4-bOA"/>
+                                                    </connections>
                                                 </button>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jAc-6F-1e0">
                                                     <rect key="frame" x="288" y="100" width="47" height="24"/>
@@ -387,10 +390,10 @@
             </objects>
             <point key="canvasLocation" x="3476" y="2187"/>
         </scene>
-        <!--View Controller-->
+        <!--Reply-->
         <scene sceneID="rRS-wx-Hph">
             <objects>
-                <viewController id="RSZ-zf-mYA" sceneMemberID="viewController">
+                <viewController id="RSZ-zf-mYA" userLabel="Reply" customClass="ReplyViewController" customModule="twitter_alamofire_demo" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="g3s-Mn-J10"/>
                         <viewControllerLayoutGuide type="bottom" id="shy-1p-udd"/>
@@ -400,23 +403,41 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Kw2-LV-oOj">
-                                <rect key="frame" x="94" y="136" width="90" height="93"/>
+                                <rect key="frame" x="16" y="90" width="90" height="93"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </imageView>
-                            <textField opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Tweet your reply" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="ENl-hN-ah8">
-                                <rect key="frame" x="103" y="402" width="256" height="30"/>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" text="Tweet your reply here..." textAlignment="justified" translatesAutoresizingMaskIntoConstraints="NO" id="Hsr-Jt-wVS">
+                                <rect key="frame" x="115" y="99" width="244" height="138"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="16"/>
-                                <textInputTraits key="textInputTraits"/>
-                            </textField>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                            </textView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     </view>
+                    <navigationItem key="navigationItem" title="Reply" id="3WL-pW-fKC">
+                        <barButtonItem key="leftBarButtonItem" title="Back" image="close-icon" id="bbX-Qi-ugn">
+                            <connections>
+                                <action selector="closeButton:" destination="RSZ-zf-mYA" id="vQy-fS-fjc"/>
+                            </connections>
+                        </barButtonItem>
+                        <barButtonItem key="rightBarButtonItem" title="Reply" id="AcW-uG-fTR">
+                            <connections>
+                                <action selector="didTapReply:" destination="RSZ-zf-mYA" id="ayK-v3-yOS"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                    <connections>
+                        <outlet property="profileImage" destination="Kw2-LV-oOj" id="yCm-Jb-wib"/>
+                        <outlet property="replyButton" destination="AcW-uG-fTR" id="uGz-2Z-M1Z"/>
+                        <outlet property="textView" destination="Hsr-Jt-wVS" id="JaW-cz-7bw"/>
+                        <segue destination="5YO-Vh-39k" kind="show" identifier="closeSegue" id="fqu-rF-LpS"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="tsd-Q4-qgT" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4223" y="1906"/>
+            <point key="canvasLocation" x="4319" y="358"/>
         </scene>
         <!--Messages-->
         <scene sceneID="egh-wE-v31">
@@ -850,7 +871,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="UEZ-C6-BwN" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3708" y="835"/>
+            <point key="canvasLocation" x="3681" y="1223"/>
         </scene>
         <!--Notifications-->
         <scene sceneID="GNg-ij-DIO">
@@ -945,7 +966,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Gmu-9U-Bht" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4372" y="-109.29535232383809"/>
+            <point key="canvasLocation" x="4490" y="-390"/>
         </scene>
         <!--Timeline-->
         <scene sceneID="WXZ-z8-8LI">
@@ -1066,6 +1087,7 @@
     </scenes>
     <resources>
         <image name="back-icon" width="30" height="30"/>
+        <image name="close-icon" width="26" height="24"/>
         <image name="edit-icon" width="30" height="27"/>
         <image name="favor-icon" width="30" height="30"/>
         <image name="home-icon" width="30" height="30"/>
@@ -1078,6 +1100,6 @@
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="vq1-af-xCA"/>
-        <segue reference="5Fl-Wx-vrK"/>
+        <segue reference="fqu-rF-LpS"/>
     </inferredMetricsTieBreakers>
 </document>
