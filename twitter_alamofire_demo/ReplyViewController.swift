@@ -2,8 +2,8 @@
 //  ReplyViewController.swift
 //  twitter_alamofire_demo
 //
-//  Created by Mac on 8/26/1397 AP.
-//  Copyright © 1397 Charles Hieger. All rights reserved.
+//  Created by Abraham Asmile on 11/18/2018 AP.
+//  Copyright © 2018 Abraham Asmile. All rights reserved.
 //
 
 import UIKit

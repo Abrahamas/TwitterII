@@ -2,8 +2,8 @@
 //  ComposeViewController.swift
 //  twitter_alamofire_demo
 //
-//  Created by Mac on 7/30/1397 AP.
-//  Copyright © 1397 Charles Hieger. All rights reserved.
+//  Created by Abraham Asmile on 11/17/2018 AP.
+//  Copyright © 2018 Abraham Asmile. All rights reserved.
 //
 
 import UIKit
