@@ -27,10 +27,32 @@ class ReplyViewController: UIViewController, UITextViewDelegate {
 
         // Do any additional setup after loading the view.
     }
+    func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
+        // Set the character limit
+        let characterLimit = 500
+        // Construct what the new text would be if we allowed the user's latest edit
+        let newText = NSString(string: textView.text!).replacingCharacters(in: range, with: text)
+        // TODO: Update Character Count Label
+        let charCount = textView.text.count + 1
+        let charLeft = characterLimit - charCount
+        //countLabel.text = String(describing: charLeft)
+        setReplyButton()
+        //Access the editind of the text
+        return newText.characters.count < characterLimit
+      
+    }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    func setReplyButton() {
+        if textView.text.count == 0 {
+            replyButton.isEnabled = false
+        }
+        else if textView.text.count > 0{
+            replyButton.isEnabled = true
+        }
     }
     
     

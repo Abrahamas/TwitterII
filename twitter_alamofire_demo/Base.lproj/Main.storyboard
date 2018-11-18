@@ -406,7 +406,7 @@
                                 <rect key="frame" x="16" y="90" width="90" height="93"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </imageView>
-                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" text="Tweet your reply here..." textAlignment="justified" translatesAutoresizingMaskIntoConstraints="NO" id="Hsr-Jt-wVS">
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" textAlignment="justified" translatesAutoresizingMaskIntoConstraints="NO" id="Hsr-Jt-wVS">
                                 <rect key="frame" x="115" y="99" width="244" height="138"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -1099,6 +1099,6 @@
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="vq1-af-xCA"/>
-        <segue reference="5Fl-Wx-vrK"/>
+        <segue reference="fqu-rF-LpS"/>
     </inferredMetricsTieBreakers>
 </document>
